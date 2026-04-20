@@ -1,1 +1,15 @@
 /* SQL Statements to create employee table */
+USE EmployeeRecords;
+
+DROP TABLE IF EXISTS employees;
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    salary FLOAT NOT NULL,
+    email VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status VARCHAR(50) NOT NULL DEFAULT 'active'
+);
