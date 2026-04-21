@@ -1,7 +1,12 @@
 
+const Employee = require('../models/employeeModel');
+
 exports.getAllEmployees = async (req, res, next) => {
     try {
-        res.status(200).json({ Message: "All employees"  });
+        const employees = await Employee.findAll({
+            where: { status: 'active'}
+        });
+        res.status(200).json(employees);
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
     }
