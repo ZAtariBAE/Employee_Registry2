@@ -3,8 +3,6 @@
 
 const {DataTypes} = require('sequelize');
 
-// https://blog.postman.com/how-to-create-a-rest-api-with-node-js-and-express/
-
 const UserModel = {
     id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
     name: { type: DataTypes.STRING, allowNull: false },
