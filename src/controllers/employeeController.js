@@ -3,12 +3,22 @@ const Employee = require('../models/employeeModel');
 
 exports.getAllEmployees = async (req, res, next) => {
     try {
+        const StatusQuery = (req.query.status || 'active').toLowerCase();
+        let whereCondition = {};
+
+        if (StatusQuery === 'active' || StatusQuery === 'inactive') {
+            whereCondition.status = StatusQuery;
+        } else if (StatusQuery === 'all') {
+            whereCondition.status = ['active', 'inactive'];
+        } else {
+            return res.status(422).json({message: 'Invalid Parameter'})
+        }
         const employees = await Employee.findAll({
-            where: { status: 'active'}
+            where: whereCondition
         });
         res.status(200).json(employees);
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(500).json({ Message: "Database error"  });
     }
 }
 
@@ -22,7 +32,12 @@ exports.createEmployee = async (req, res, next) => {
 
 exports.getEmployeeById = async (req, res, next) => {
     try {
-        res.status(200).json({ Message: "Employee retrieved"  });
+        const employeeId = req.params.id;
+        const employees = await Employee.findAll({
+            where: { id: employeeId}
+        });
+
+        res.status(200).json(employees);
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
     }
