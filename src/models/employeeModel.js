@@ -11,7 +11,7 @@ const Employee = sequelize.define ( 'Employee', {
     email: { type: DataTypes.STRING, allowNull: true },
     created_at: { type: DataTypes.DATE, allowNull: false },
     updated_at: { type: DataTypes.DATE, allowNull: false },
-    status: { type: DataTypes.STRING , allowNull: false },
+    status: { type: DataTypes.STRING , allowNull: true },
 }, {
     tableName: 'employees',
     timestamps: true,
