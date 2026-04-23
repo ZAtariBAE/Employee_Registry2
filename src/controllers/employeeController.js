@@ -1,5 +1,6 @@
 
 const Employee = require('../models/employeeModel');
+const {validateAllEmployeeData} = require('../middleware/validateBody');
 
 exports.getAllEmployees = async (req, res, next) => {
     try {
@@ -11,17 +12,13 @@ exports.getAllEmployees = async (req, res, next) => {
         } else if (StatusQuery === 'all') {
             whereCondition.status = ['active', 'inactive'];
         } else {
-            return res.status(422).jszon({message: 'Invalid Parameter'})
+            return res.status(422).json({message: 'Invalid Parameter'})
         }
         const employees = await Employee.findAll({
             where: whereCondition
         });
         res.status(200).json(employees);
     } catch (error) {
-        console.error("Failed to create employee:", error);
-        if (error.name === 'SequelizeValidationError') {
-            return res.status(400).json({ message: "Database validation failed", details: error.errors });
-        }
         res.status(500).json({ Message: "Database error"  });
     }
 }
@@ -29,13 +26,13 @@ exports.getAllEmployees = async (req, res, next) => {
 exports.createEmployee = async (req, res, next) => {
     try {
         const {name, department, salary, email} = req.body;
-        console.log(req.body);
-        console.log(email);
 
-        if (!name || !department || !salary) {
-            return res.status(422).json ({
-                message: "Missing required fields"
-            });
+        const validationErrors = validateAllEmployeeData(name, department, salary, email)
+        if (validationErrors.length > 0) {
+            return res.status(422).json({
+                message: "Validation Error.",
+                errors: validationErrors
+            })
         }
 
         const newEmployee = await Employee.create ({
@@ -44,7 +41,6 @@ exports.createEmployee = async (req, res, next) => {
             salary,
             email
         });
-
         res.status(201).json({ 
             Message: "Employee created",
             employee: newEmployee
@@ -74,17 +70,19 @@ exports.replaceEmployee = async (req, res, next) => {
         const employeeId = req.params.id;
         const { name, department, salary, email } = req.body;
 
-        if (!name || !department || !salary) {
-            return res.status(422).json({
-                message:  'Missing required fields'
-            });
-        }
-
         const employee = await Employee.findByPk(employeeId);
         if (!employee) {
             return res.status(404).json({
                 message:  'Employee Not Found'
             }); 
+        }
+
+        const validationErrors = validateAllEmployeeData(name, department, salary, email)
+        if (validationErrors.length > 0) {
+            return res.status(422).json({
+                message: "Validation Error.",
+                errors: validationErrors
+            })
         }
 
         await employee.update({
