@@ -1,6 +1,6 @@
 
 const Employee = require('../models/employeeModel');
-const {validateAllEmployeeData} = require('../middleware/validateBody');
+const {validateAllEmployeeData, validateRequiredFields} = require('../middleware/validateBody');
 
 exports.getAllEmployees = async (req, res, next) => {
     try {
@@ -17,7 +17,10 @@ exports.getAllEmployees = async (req, res, next) => {
         const employees = await Employee.findAll({
             where: whereCondition
         });
-        res.status(200).json(employees);
+        res.status(200).json({
+            Message: "Employee created",
+            Data: employees
+        });
     } catch (error) {
         res.status(500).json({ Message: "Database error"  });
     }
@@ -25,9 +28,9 @@ exports.getAllEmployees = async (req, res, next) => {
 
 exports.createEmployee = async (req, res, next) => {
     try {
-        const {name, department, salary, email} = req.body;
-
-        const validationErrors = validateAllEmployeeData(name, department, salary, email)
+        // Request Validation
+        const presenceErrors = validateRequiredFields(['name', 'department', 'salary'], req.body);
+        let validationErrors = (presenceErrors.length > 0) ? presenceErrors : validateAllEmployeeData(req.body);
         if (validationErrors.length > 0) {
             return res.status(422).json({
                 message: "Validation Error.",
@@ -35,20 +38,21 @@ exports.createEmployee = async (req, res, next) => {
             })
         }
 
+        // SQL Actions
+        const {name, department, salary, email} = req.body;
         const newEmployee = await Employee.create ({
             name,
             department,
             salary,
             email
         });
-        res.status(201).json({ 
+        res.status(201).json({
             Message: "Employee created",
-            employee: newEmployee
-          });
-
+            Data: newEmployee
+        });
 
     } catch (error) {
-        res.status(500).json({ Message: error  });
+        res.status(500).json({ Message: error.message });
     }
 }
 
@@ -58,8 +62,10 @@ exports.getEmployeeById = async (req, res, next) => {
         const employees = await Employee.findAll({
             where: { id: employeeId}
         });
-
-        res.status(200).json(employees);
+        res.status(200).json({
+            Message: "Employee created",
+            Data: employees
+        });
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
     }
@@ -94,7 +100,7 @@ exports.replaceEmployee = async (req, res, next) => {
 
         res.status(200).json({ 
             Message: "Employee replaced",
-            employee: employee
+            Data: employee
           });
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
@@ -131,7 +137,7 @@ exports.updateEmployee = async (req, res, next) => {
 
         res.status(200).json({ 
             Message: "Employee updated",
-            employee: employee
+            Data: employee
           });
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
@@ -141,6 +147,8 @@ exports.updateEmployee = async (req, res, next) => {
 exports.updateEmployeeStatus = async (req, res, next) => {
     try {
         const employeeId = req.params.id;
+        let status = req.body.status
+
         const employee = await Employee.findByPk(employeeId);
 
         if (!employee) {
@@ -150,7 +158,6 @@ exports.updateEmployeeStatus = async (req, res, next) => {
         }
 
         const statusOptions = ["active", "inactive"];
-        let status = req.body.status
 
         if (!status) {
             return res.status(422).json ({
@@ -167,10 +174,9 @@ exports.updateEmployeeStatus = async (req, res, next) => {
         }
 
         await employee.update({status: status});
-
         res.status(200).json({ 
             Message: "Employee updated",
-            employee: employee
+            Data: employee
           });
     } catch (error) {
         res.status(400).json({ Message: "Bad Request"  });
