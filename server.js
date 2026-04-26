@@ -1,12 +1,20 @@
 // Entry Point
 
 require('dotenv').config();
-
 const app = require('./src/app');
-
+const sequelize = require ('./src/config/db');
 const PORT = 3000;
 
-app.listen(PORT, () => {
-    console.log('Server is running on port ${PORT}');
-});
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connected succesfully');
+
+        app.listen(PORT, () => {
+            console.log('Server Running on port 3000')
+        });
+    })
+    .catch((error) => {
+        console.error('Unable to connect to Database', error)
+    });
+
 
