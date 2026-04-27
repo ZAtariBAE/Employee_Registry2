@@ -55,6 +55,7 @@ exports.validateAllEmployeeData = (data) => {
     if (status !== 'active' && status !== 'inactive') {
       errors.push("Status must be (active) or (inactive).");
     }
+    data.status = status.toLowerCase();
   }
 
   return errors;

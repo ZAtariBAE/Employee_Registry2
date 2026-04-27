@@ -1,34 +1,39 @@
 
 const Employee = require('../models/employeeModel');
 const {validateAllEmployeeData, validateRequiredFields} = require('../middleware/validateBody');
+const { raw } = require('express');
 
 exports.getAllEmployees = async (req, res, next) => {
     try {
-        const StatusQuery = (req.query.status || 'active').toLowerCase();
-        let whereCondition = {};
 
-        if (StatusQuery === 'active' || StatusQuery === 'inactive') {
-            whereCondition.status = StatusQuery;
-        } else if (StatusQuery === 'all') {
-            whereCondition.status = ['active', 'inactive'];
-        } else {
-            return res.status(422).json({message: 'Invalid Parameter'})
+        // Validator
+        const statusQuery = (req.query.status || 'active').toLowerCase();
+        const allowedStatuses = ['active', 'inactive', 'all'];
+        if (!allowedStatuses.includes(statusQuery)) {
+            return res.status(422).json({ message: 'Invalid status parameter' });
         }
-        const employees = await Employee.findAll({
+
+        let whereCondition = {};
+        if (statusQuery !== 'all') {
+            whereCondition.status = statusQuery;
+        }
+
+        // SQL
+        const employee = await Employee.findAll({
             where: whereCondition
         });
-        res.status(200).json({
-            Message: "Employee created",
-            Data: employees
+        return res.status(200).json({
+            message: "Employees retrieved successfully",
+            data: employee
         });
     } catch (error) {
-        res.status(500).json({ Message: "Database error"  });
+        res.status(500).json({ message: error.message });
     }
 }
 
 exports.createEmployee = async (req, res, next) => {
     try {
-        // Request Validation
+        // Validation
         const presenceErrors = validateRequiredFields(['name', 'department', 'salary'], req.body);
         let validationErrors = (presenceErrors.length > 0) ? presenceErrors : validateAllEmployeeData(req.body);
         if (validationErrors.length > 0) {
@@ -47,35 +52,39 @@ exports.createEmployee = async (req, res, next) => {
             email
         });
         res.status(201).json({
-            Message: "Employee created",
-            Data: newEmployee
+            message: "Employee created",
+            data: newEmployee
         });
 
     } catch (error) {
-        res.status(500).json({ Message: error.message });
+        res.status(500).json({ message: error.message });
     }
 }
 
 exports.getEmployeeById = async (req, res, next) => {
     try {
         const employeeId = req.params.id;
-        const employees = await Employee.findAll({
-            where: { id: employeeId}
-        });
+        const employee = await Employee.findByPk(employeeId);
+        if (!employee) {
+            return res.status(404).json({
+                message: "Employee not found"
+            });
+        }
+
+
         res.status(200).json({
-            Message: "Employee created",
-            Data: employees
+            message: "Employee created",
+            data: employee
         });
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(500).json({ message: error.message });
     }
 }
 
 exports.replaceEmployee = async (req, res, next) => {
     try {
+        // Validation
         const employeeId = req.params.id;
-        const { name, department, salary, email } = req.body;
-
         const employee = await Employee.findByPk(employeeId);
         if (!employee) {
             return res.status(404).json({
@@ -83,7 +92,8 @@ exports.replaceEmployee = async (req, res, next) => {
             }); 
         }
 
-        const validationErrors = validateAllEmployeeData(name, department, salary, email)
+        const presenceErrors = validateRequiredFields(['name', 'department', 'salary'], req.body);
+        let validationErrors = (presenceErrors.length > 0) ? presenceErrors : validateAllEmployeeData(req.body);
         if (validationErrors.length > 0) {
             return res.status(422).json({
                 message: "Validation Error.",
@@ -91,109 +101,108 @@ exports.replaceEmployee = async (req, res, next) => {
             })
         }
 
+        // SQL Actions
+        const { name, department, salary, email } = req.body;
         await employee.update({
             name,
             department,
             salary,
             email: email || null
         });
-
         res.status(200).json({ 
-            Message: "Employee replaced",
-            Data: employee
+            message: "Employee replaced",
+            data: employee
           });
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(500).json({ message: error.message });
     }
 }
 
 exports.updateEmployee = async (req, res, next) => {
     try {
+
+        // Validator  
         const employeeId = req.params.id;
         const employee = await Employee.findByPk(employeeId);
-
         if (!employee) {
             return res.status(404).json({
                 message: "employee not found"
             });
         }
 
-        const {name, department, salary, email} = req.body;
-
-        const updates = {};
-
-        if (name !== undefined) updates.name = name;
-        if (department !== undefined) updates.department = department;
-        if (salary !== undefined) updates.salary = salary;
-        if (email !== undefined) updates.email = email;
-
-        if (Object.keys(updates).length===0) {
-           res.status(400).json({ 
-            Message: "Empty Request",
-          }); 
+        const validationErrors = validateAllEmployeeData(req.body);
+        if (validationErrors.length > 0) {
+            return res.status(422).json({
+                message: "Validation Error.",
+                errors: validationErrors
+            })
         }
 
-        await employee.update(updates);
+        const {name, department, salary, email} = req.body;
+        const rawData = {name, department, salary, email};
+        let updates = {};
+        for (const key in rawData) {
+            if (rawData[key] !== undefined) {
+                updates[key] = rawData[key];
+            }
+        }
 
+        // SQL
+        await employee.update(updates);
         res.status(200).json({ 
-            Message: "Employee updated",
-            Data: employee
+            message: "Employee updated",
+            data: employee
           });
+
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(500).json({ message: error.message });
     }
 }
 
 exports.updateEmployeeStatus = async (req, res, next) => {
     try {
+        
+        // Validator
         const employeeId = req.params.id;
-        let status = req.body.status
-
         const employee = await Employee.findByPk(employeeId);
-
         if (!employee) {
             return res.status(404).json({
                 message: "employee not found"
             });
         }
 
-        const statusOptions = ["active", "inactive"];
-
-        if (!status) {
-            return res.status(422).json ({
-                message: "Missing required fields"
-            });
+        const presenceErrors = validateRequiredFields(['status'], req.body);
+        let validationErrors = (presenceErrors.length > 0) ? presenceErrors : validateAllEmployeeData(req.body);
+        if (validationErrors.length > 0) {
+            return res.status(422).json({
+                message: "Validation Error.",
+                errors: validationErrors
+            })
         }
 
-        status = status.toLowerCase();
-
-        if (!statusOptions.includes(status)) {
-            return res.status(422).json ({
-                message: `${status} is not a Status`
-            });
-        }
-
-        await employee.update({status: status});
+        // SQL
+        const { status } = req.body;
+        await employee.update({ status });
         res.status(200).json({ 
-            Message: "Employee updated",
-            Data: employee
+            message: "Employee updated",
+            data: employee
           });
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(400).json({ message: "Bad Request"  });
     }
 }
 
 exports.deleteEmployee = async (req, res, next) => {
     try {
         const employeeId = req.params.id;
-        const RowsAffected = await Employee.destroy({
+        const rowsAffected = await Employee.destroy({
             where: { id: employeeId}
         });
-        if (RowsAffected === 0) {
+        if (rowsAffected === 0) {
             return res.status(404).json({ message: "Employee not found." });
         }
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ Message: "Bad Request"  });
+        res.status(500).json({ message: error.message });
     }
 }
