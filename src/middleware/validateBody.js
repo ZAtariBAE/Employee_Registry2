@@ -11,10 +11,10 @@ exports.validateAllEmployeeData = (data) => {
     if (typeof name !== 'string') {
       errors.push("Name must be text");
     }
-    if (isEmpty(name, {ignore_whitespace: true})) {
+    else if (isEmpty(name, {ignore_whitespace: true})) {
       errors.push("Name cannot be empty spaces");
     }
-    if (!(isLength(name, {min:3, max: 100}))) {
+    else if (!(isLength(name, {min:3, max: 100}))) {
       errors.push("Name must be between 3-100 characters");
     }
   }
@@ -24,10 +24,10 @@ exports.validateAllEmployeeData = (data) => {
     if (typeof department !== 'string') {
       errors.push("Department must be text")
     }
-    if (isEmpty(department, {ignore_whitespace: true})) {
+    else if (isEmpty(department, {ignore_whitespace: true})) {
       errors.push("Department cannot be empty spaces");
     }
-    if (!(isLength(department, {min:3, max: 100}))) {
+    else if (!(isLength(department, {min:3, max: 100}))) {
       errors.push("Department must be between 3-100 characters");
     }
   }
@@ -49,10 +49,10 @@ exports.validateAllEmployeeData = (data) => {
     if (typeof status !== 'string') {
       errors.push("Status must be text")
     }
-    if (isEmpty(status, {ignore_whitespace: true})) {
+    else if (isEmpty(status, {ignore_whitespace: true})) {
       errors.push("Status cannot be empty spaces");
     }
-    if (status !== 'active' && status !== 'inactive') {
+    else if (status !== 'active' && status !== 'inactive') {
       errors.push("Status must be (active) or (inactive).");
     }
     data.status = status.toLowerCase();

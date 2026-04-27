@@ -147,6 +147,12 @@ exports.updateEmployee = async (req, res, next) => {
             }
         }
 
+        if (Object.keys(updates).length === 0) {
+            return res.status(422).json({ 
+                message: "Update fields are empty." 
+            });
+        }
+
         // SQL
         await employee.update(updates);
         res.status(200).json({ 
@@ -188,7 +194,7 @@ exports.updateEmployeeStatus = async (req, res, next) => {
             data: employee
           });
     } catch (error) {
-        res.status(400).json({ message: "Bad Request"  });
+        res.status(500).json({ message: error.message });
     }
 }
 
