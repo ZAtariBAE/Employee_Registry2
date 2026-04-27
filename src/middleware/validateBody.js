@@ -6,12 +6,6 @@ exports.validateAllEmployeeData = (data) => {
   const {name, department, salary, email, status} = data;
 
 
-  if (Object.keys(data).length===0) {
-    res.status(400).json({ 
-      Message: "Empty Request",
-    }); 
-  }
-
   // Name Validation
   if (name !== undefined) {
     if (typeof name !== 'string') {
