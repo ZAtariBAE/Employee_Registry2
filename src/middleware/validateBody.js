@@ -1,47 +1,74 @@
 // Validates in Controller
 const { isEmpty, isLength, isEmail } = require("validator");
 
-const validateAllEmployeeData = (name, department, salary, email) => {
-    const errors = [];
+exports.validateAllEmployeeData = (data) => {
+  let errors = [];
+  const {name, department, salary, email, status} = data;
 
-    // Name Validation
-    if (!name) {
-      errors.push("Name is a required field.");
-    }
-     if (typeof name !== 'string') {
+
+  // Name Validation
+  if (name !== undefined) {
+    if (typeof name !== 'string') {
       errors.push("Name must be text");
     }
-     if (isEmpty(name, {ignore_whitespace: true})) {
+    else if (isEmpty(name, {ignore_whitespace: true})) {
       errors.push("Name cannot be empty spaces");
     }
-     if (!(isLength(name, {min:3, max: 100}))) {
+    else if (!(isLength(name, {min:3, max: 100}))) {
       errors.push("Name must be between 3-100 characters");
     }
+  }
 
-    // Department Validation
-    if (!department) {
-      errors.push("Department is a required field.");
-    } else if (typeof department !== 'string') {
+  // Department Validation
+  if (department !== undefined) { 
+    if (typeof department !== 'string') {
       errors.push("Department must be text")
-    } else if (isEmpty(department, {ignore_whitespace: true})) {
+    }
+    else if (isEmpty(department, {ignore_whitespace: true})) {
       errors.push("Department cannot be empty spaces");
     }
+    else if (!(isLength(department, {min:3, max: 100}))) {
+      errors.push("Department must be between 3-100 characters");
+    }
+  }
 
-    // Salary Validation
-    if (!salary) {
-      errors.push("Salary is a required field.");
-    } else if (isNaN(salary)) { 
+  // Salary Validation
+  if (salary !== undefined) {
+    if (isNaN(salary)) { 
       errors.push("Salary must be a number.");
     }
+  }
 
-    // Email Validation
-    if (email) {
-        if (!isEmail(email)) { errors.push("Email invalid");}
+  // Email Validation
+  if (email !== undefined) {
+    if (!isEmail(email)) { errors.push("Email invalid");}
+  }
+
+  // Status Validation
+  if (status !== undefined) {
+    if (typeof status !== 'string') {
+      errors.push("Status must be text")
     }
+    else if (isEmpty(status, {ignore_whitespace: true})) {
+      errors.push("Status cannot be empty spaces");
+    }
+    else if (status !== 'active' && status !== 'inactive') {
+      errors.push("Status must be (active) or (inactive).");
+    }
+    data.status = status.toLowerCase();
+  }
 
-    return errors;
-
+  return errors;
 };
 
+exports.validateRequiredFields = (requiredFields, data) => {
+    let errors = [];
 
-module.exports =  {validateAllEmployeeData};
+    requiredFields.forEach(field => {
+      if (data[field] === undefined || data[field] === null || data[field] === '') {
+        errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is a required field.`)
+      } 
+    });
+
+    return errors;
+};

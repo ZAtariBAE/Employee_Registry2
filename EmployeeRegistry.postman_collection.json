@@ -49,7 +49,125 @@
       },
       "response": [
         {
-          "name": "Retrieve all employees",
+          "name": "errBadStatus",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/v1/employees?status=notValid",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "notValid",
+                  "description": "{'Default: active', 'values: active, inactive, all'}"
+                }
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "38"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"26-/c3uQZ98VLpTUZW3vlst/BemmL0\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 10:47:51 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Invalid status parameter\"\n}"
+        },
+        {
+          "name": "successInactive",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/v1/employees?status=inactive",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "inactive",
+                  "description": "{'Default: active', 'values: active, inactive, all'}"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "259"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"103-XDxV9mRuYgqkpaNXzHa98NURAUU\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 10:48:52 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Employees retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 53,\n            \"name\": \"Nina Rodriguez\",\n            \"department\": \"Program\",\n            \"salary\": 629,\n            \"email\": \"Ellsworth49@hotmail.com\",\n            \"created_at\": \"2026-04-27T10:40:29.000Z\",\n            \"updated_at\": \"2026-04-27T10:43:24.000Z\",\n            \"status\": \"inactive\"\n        }\n    ]\n}"
+        },
+        {
+          "name": "successDefault",
           "originalRequest": {
             "method": "GET",
             "header": [],
@@ -65,7 +183,7 @@
               "query": [
                 {
                   "key": "status",
-                  "value": "active",
+                  "value": "inactive",
                   "description": "{'Default: active', 'values: active, inactive, all'}",
                   "disabled": true
                 }
@@ -86,15 +204,15 @@
             },
             {
               "key": "Content-Length",
-              "value": "4135"
+              "value": "1685"
             },
             {
               "key": "ETag",
-              "value": "W/\"1027-RYz55DrrY4oh0Hw8DOOyBP4NpWw\""
+              "value": "W/\"695-wjjyf8uueLc+sy8aXFLmZnjKy5k\""
             },
             {
               "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:35 GMT"
+              "value": "Mon, 27 Apr 2026 12:45:09 GMT"
             },
             {
               "key": "Connection",
@@ -106,7 +224,7 @@
             }
           ],
           "cookie": [],
-          "body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Jane Smith\",\n        \"department\": \"Finance\",\n        \"salary\": 82000,\n        \"email\": \"a@test.com\",\n        \"created_at\": \"2026-04-20T10:17:07.000Z\",\n        \"updated_at\": \"2026-04-20T10:17:07.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Sobhi Hammouri\",\n        \"department\": \"Finance\",\n        \"salary\": 800,\n        \"email\": \"sobhi@gmail.com\",\n        \"created_at\": \"2026-04-21T12:25:05.000Z\",\n        \"updated_at\": \"2026-04-22T13:22:16.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 6,\n        \"name\": \"Hamada Hilal\",\n        \"department\": \"Music\",\n        \"salary\": 304.2,\n        \"email\": \"Hilal.H@hotmail.com\",\n        \"created_at\": \"2026-04-21T14:01:13.000Z\",\n        \"updated_at\": \"2026-04-21T14:01:13.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 7,\n        \"name\": \"Amjad Talhouni\",\n        \"department\": \"Finance\",\n        \"salary\": 2013,\n        \"email\": \"sobhi@gmail.com\",\n        \"created_at\": \"2026-04-22T07:35:24.000Z\",\n        \"updated_at\": \"2026-04-22T13:33:11.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 12,\n        \"name\": \"Loay Hunti\",\n        \"department\": \"Management\",\n        \"salary\": 1098,\n        \"email\": null,\n        \"created_at\": \"2026-04-22T09:42:35.000Z\",\n        \"updated_at\": \"2026-04-22T09:42:35.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 13,\n        \"name\": \"Jana Maggio\",\n        \"department\": \"Management\",\n        \"salary\": 1098,\n        \"email\": null,\n        \"created_at\": \"2026-04-22T09:49:17.000Z\",\n        \"updated_at\": \"2026-04-22T09:49:17.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 14,\n        \"name\": \"Kelli Jaskolski\",\n        \"department\": \"Management\",\n        \"salary\": 1098,\n        \"email\": null,\n        \"created_at\": \"2026-04-22T09:49:22.000Z\",\n        \"updated_at\": \"2026-04-22T09:49:22.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 15,\n        \"name\": \"Terrell Treutel\",\n        \"department\": \"Management\",\n        \"salary\": 1098,\n        \"email\": null,\n        \"created_at\": \"2026-04-22T09:49:24.000Z\",\n        \"updated_at\": \"2026-04-22T09:49:24.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 16,\n        \"name\": \"Preston McKenzie\",\n        \"department\": \"Management\",\n        \"salary\": 1098,\n        \"email\": \"test@mail.com\",\n        \"created_at\": \"2026-04-22T10:26:58.000Z\",\n        \"updated_at\": \"2026-04-22T10:26:58.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 18,\n        \"name\": \"Tyrone Hettinger\",\n        \"department\": \"Paradigm\",\n        \"salary\": 3,\n        \"email\": \"Sadie.Carroll@gmail.com\",\n        \"created_at\": \"2026-04-23T07:18:14.000Z\",\n        \"updated_at\": \"2026-04-23T07:18:14.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 19,\n        \"name\": \"Mable O'Hara\",\n        \"department\": \"Group\",\n        \"salary\": 938,\n        \"email\": \"Eleanore4@yahoo.com\",\n        \"created_at\": \"2026-04-23T07:18:20.000Z\",\n        \"updated_at\": \"2026-04-23T07:18:20.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 20,\n        \"name\": \"Sue Hagenes MD\",\n        \"department\": \"Intranet\",\n        \"salary\": 848,\n        \"email\": \"Gayle.Rolfson@gmail.com\",\n        \"created_at\": \"2026-04-23T07:19:15.000Z\",\n        \"updated_at\": \"2026-04-23T07:19:15.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 21,\n        \"name\": \"Kirk Bartell\",\n        \"department\": \"Markets\",\n        \"salary\": 94,\n        \"email\": \"Bethany77@yahoo.com\",\n        \"created_at\": \"2026-04-23T07:34:41.000Z\",\n        \"updated_at\": \"2026-04-23T07:34:41.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 22,\n        \"name\": \"Rachel Hudson\",\n        \"department\": \"Interactions\",\n        \"salary\": 507,\n        \"email\": \"Leopoldo_Zieme@hotmail.com\",\n        \"created_at\": \"2026-04-23T07:34:55.000Z\",\n        \"updated_at\": \"2026-04-23T07:34:55.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 23,\n        \"name\": \"Dixie McGlynn\",\n        \"department\": \"Integration\",\n        \"salary\": 471,\n        \"email\": \"Abby97@gmail.com\",\n        \"created_at\": \"2026-04-23T07:35:17.000Z\",\n        \"updated_at\": \"2026-04-23T07:35:17.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 24,\n        \"name\": \"Arthur Effertz\",\n        \"department\": \"Paradigm\",\n        \"salary\": 355,\n        \"email\": \"Mackenzie_Wilkinson54@yahoo.com\",\n        \"created_at\": \"2026-04-23T07:36:44.000Z\",\n        \"updated_at\": \"2026-04-23T07:36:44.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 27,\n        \"name\": \"Tamara Leffler\",\n        \"department\": \"Brand\",\n        \"salary\": 852,\n        \"email\": \"Wendy.Rippin@example.net\",\n        \"created_at\": \"2026-04-23T07:50:25.000Z\",\n        \"updated_at\": \"2026-04-23T07:51:14.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 29,\n        \"name\": \"Albert Bradtke\",\n        \"department\": \"Functionality\",\n        \"salary\": 552,\n        \"email\": \"Kaya_Cole85@hotmail.com\",\n        \"created_at\": \"2026-04-23T08:17:24.000Z\",\n        \"updated_at\": \"2026-04-23T08:17:24.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 30,\n        \"name\": \"Preston Kozey\",\n        \"department\": \"Functionality\",\n        \"salary\": 168,\n        \"email\": \"Zachery.Kihn33@hotmail.com\",\n        \"created_at\": \"2026-04-23T08:17:46.000Z\",\n        \"updated_at\": \"2026-04-23T08:17:46.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 31,\n        \"name\": \"Ms. Tara Kuhic\",\n        \"department\": \"Mobility\",\n        \"salary\": 74,\n        \"email\": \"Hobart.Carter@yahoo.com\",\n        \"created_at\": \"2026-04-23T08:18:34.000Z\",\n        \"updated_at\": \"2026-04-23T08:18:34.000Z\",\n        \"status\": \"active\"\n    },\n    {\n        \"id\": 32,\n        \"name\": \"Richard Howe\",\n        \"department\": \"Solutions\",\n        \"salary\": 634,\n        \"email\": \"Albertha97@yahoo.com\",\n        \"created_at\": \"2026-04-23T08:19:13.000Z\",\n        \"updated_at\": \"2026-04-23T08:19:13.000Z\",\n        \"status\": \"active\"\n    }\n]"
+          "body": "{\n    \"message\": \"Employees retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Jane Smith\",\n            \"department\": \"Finance\",\n            \"salary\": 82000,\n            \"email\": \"a@test.com\",\n            \"created_at\": \"2026-04-20T10:17:07.000Z\",\n            \"updated_at\": \"2026-04-20T10:17:07.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 47,\n            \"name\": \"Byron Johnson\",\n            \"department\": \"Implementation\",\n            \"salary\": 201,\n            \"email\": \"Monroe51@gmail.com\",\n            \"created_at\": \"2026-04-27T10:36:49.000Z\",\n            \"updated_at\": \"2026-04-27T10:36:49.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 48,\n            \"name\": \"Antoinette Upton\",\n            \"department\": \"Branding\",\n            \"salary\": 774,\n            \"email\": \"Lucinda_OKon@yahoo.com\",\n            \"created_at\": \"2026-04-27T10:37:34.000Z\",\n            \"updated_at\": \"2026-04-27T10:37:34.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 49,\n            \"name\": \"Brian Heidenreich\",\n            \"department\": \"Identity\",\n            \"salary\": 591,\n            \"email\": \"Muhammad_Crooks@yahoo.com\",\n            \"created_at\": \"2026-04-27T10:37:58.000Z\",\n            \"updated_at\": \"2026-04-27T10:37:58.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 50,\n            \"name\": \"Lorena Murray\",\n            \"department\": \"Assurance\",\n            \"salary\": 174,\n            \"email\": \"Isabelle_Donnelly35@yahoo.com\",\n            \"created_at\": \"2026-04-27T10:39:20.000Z\",\n            \"updated_at\": \"2026-04-27T10:39:20.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 51,\n            \"name\": \"Jane Rolfson\",\n            \"department\": \"Configuration\",\n            \"salary\": 453,\n            \"email\": \"Lucy_Satterfield70@yahoo.com\",\n            \"created_at\": \"2026-04-27T10:39:35.000Z\",\n            \"updated_at\": \"2026-04-27T10:39:35.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 52,\n            \"name\": \"Kerry Cole\",\n            \"department\": \"Directives\",\n            \"salary\": 463,\n            \"email\": \"Howard.Balistreri@hotmail.com\",\n            \"created_at\": \"2026-04-27T10:39:37.000Z\",\n            \"updated_at\": \"2026-04-27T10:39:37.000Z\",\n            \"status\": \"active\"\n        },\n        {\n            \"id\": 55,\n            \"name\": \"Angel Spencer\",\n            \"department\": \"Group\",\n            \"salary\": 565,\n            \"email\": \"Mario.Predovic42@gmail.com\",\n            \"created_at\": \"2026-04-27T12:43:14.000Z\",\n            \"updated_at\": \"2026-04-27T12:43:14.000Z\",\n            \"status\": \"active\"\n        }\n    ]\n}"
         }
       ]
     },
@@ -132,7 +250,60 @@
       },
       "response": [
         {
-          "name": "Retrieve employee ID",
+          "name": "errNotFound",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/v1/employees/123",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "123"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "32"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"20-HHUHWyX9RZhESkyYIuLDu5Z0xwA\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 10:51:04 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Employee not found\"\n}"
+        },
+        {
+          "name": "success",
           "originalRequest": {
             "method": "GET",
             "header": [],
@@ -162,15 +333,15 @@
             },
             {
               "key": "Content-Length",
-              "value": "200"
+              "value": "239"
             },
             {
               "key": "ETag",
-              "value": "W/\"c8-XIIA30BfdogqBDuqEpnWCRlWuCE\""
+              "value": "W/\"ef-wEmZcDs5Z8QGPD4iBboFgpNP11c\""
             },
             {
               "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:25 GMT"
+              "value": "Mon, 27 Apr 2026 12:44:07 GMT"
             },
             {
               "key": "Connection",
@@ -182,7 +353,7 @@
             }
           ],
           "cookie": [],
-          "body": "[\n    {\n        \"id\": 32,\n        \"name\": \"Richard Howe\",\n        \"department\": \"Solutions\",\n        \"salary\": 634,\n        \"email\": \"Albertha97@yahoo.com\",\n        \"created_at\": \"2026-04-23T08:19:13.000Z\",\n        \"updated_at\": \"2026-04-23T08:19:13.000Z\",\n        \"status\": \"active\"\n    }\n]"
+          "body": "{\n    \"message\": \"Employee created\",\n    \"data\": {\n        \"id\": 55,\n        \"name\": \"Angel Spencer\",\n        \"department\": \"Group\",\n        \"salary\": 565,\n        \"email\": \"Mario.Predovic42@gmail.com\",\n        \"created_at\": \"2026-04-27T12:43:14.000Z\",\n        \"updated_at\": \"2026-04-27T12:43:14.000Z\",\n        \"status\": \"active\"\n    }\n}"
         }
       ]
     },
@@ -195,10 +366,8 @@
             "exec": [
               "const responseData = pm.response.json();",
               "",
-              "const extractedID = responseData.employee.id;",
-              "pm.environment.set (\"employeeyId\", extractedID);",
-              "",
-              "console.log(\"Extracted ID: \", extractedID);"
+              "const extractedID = responseData.data.id;",
+              "pm.environment.set (\"employeeyId\", extractedID);"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -257,80 +426,7 @@
       },
       "response": [
         {
-          "name": "Success",
-          "originalRequest": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"department\": \"{{$randomJobArea}}\",\r\n  \"salary\": {{$randomInt}},\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base-url}}/v1/employees/",
-              "host": [
-                "{{base-url}}"
-              ],
-              "path": [
-                "v1",
-                "employees",
-                ""
-              ]
-            }
-          },
-          "status": "Created",
-          "code": 201,
-          "_postman_previewlanguage": null,
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "222"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"de-PhZ1S/lvGYZc3WQQVy74fQthdqA\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:13 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"Message\": \"Employee created\",\n    \"employee\": {\n        \"id\": 32,\n        \"name\": \"Richard Howe\",\n        \"department\": \"Solutions\",\n        \"salary\": 634,\n        \"email\": \"Albertha97@yahoo.com\",\n        \"updated_at\": \"2026-04-23T08:19:13.625Z\",\n        \"created_at\": \"2026-04-23T08:19:13.625Z\"\n    }\n}"
-        },
-        {
-          "name": "ErrEmptyReq",
+          "name": "errEmptyReq",
           "originalRequest": {
             "method": "POST",
             "header": [
@@ -403,7 +499,7 @@
           "body": "{\n    \"message\": \"Improper Request Body\",\n    \"errors\": [\n        \"Name is a required field.\",\n        \"Department is a required field.\",\n        \"Salary is a required field.\"\n    ]\n}"
         },
         {
-          "name": "ErrBadBody",
+          "name": "errBadBody",
           "originalRequest": {
             "method": "POST",
             "header": [
@@ -474,6 +570,79 @@
           ],
           "cookie": [],
           "body": "{\n    \"message\": \"Improper Request Body\",\n    \"errors\": [\n        \"Name must be between 3-100 characters\",\n        \"Department cannot be empty spaces\",\n        \"Salary must be a number.\",\n        \"Email invalid\"\n    ]\n}"
+        },
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"department\": \"{{$randomJobArea}}\",\r\n  \"salary\": {{$randomInt}},\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                ""
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "221"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"dd-epOVQFVi0yiCDkD+/svwIYfse0M\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 12:43:14 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Employee created\",\n    \"data\": {\n        \"id\": 55,\n        \"name\": \"Angel Spencer\",\n        \"department\": \"Group\",\n        \"salary\": 565,\n        \"email\": \"Mario.Predovic42@gmail.com\",\n        \"updated_at\": \"2026-04-27T12:43:14.984Z\",\n        \"created_at\": \"2026-04-27T12:43:14.984Z\"\n    }\n}"
         }
       ]
     },
@@ -508,75 +677,7 @@
       },
       "response": [
         {
-          "name": "Replace employee",
-          "originalRequest": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"department\": \"{{$randomJobArea}}\",\r\n    \"salary\": {{$randomInt}}\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base-url}}/v1/employees/{{employeeyId}}",
-              "host": [
-                "{{base-url}}"
-              ],
-              "path": [
-                "v1",
-                "employees",
-                "{{employeeyId}}"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "",
-          "header": [
-            {
-              "key": "X-Powered-By",
-              "value": "Express"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json; charset=utf-8"
-            },
-            {
-              "key": "Content-Length",
-              "value": "220"
-            },
-            {
-              "key": "ETag",
-              "value": "W/\"dc-CRfPKYKG2aC4gH8RkEvo2WImRr0\""
-            },
-            {
-              "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:42 GMT"
-            },
-            {
-              "key": "Connection",
-              "value": "keep-alive"
-            },
-            {
-              "key": "Keep-Alive",
-              "value": "timeout=5"
-            }
-          ],
-          "cookie": [
-            {
-              "expires": "Invalid Date",
-              "domain": "",
-              "path": ""
-            }
-          ],
-          "body": "{\n    \"Message\": \"Employee replaced\",\n    \"employee\": {\n        \"id\": 32,\n        \"name\": \"Anita Towne\",\n        \"department\": \"Metrics\",\n        \"salary\": 712,\n        \"email\": null,\n        \"created_at\": \"2026-04-23T08:19:13.000Z\",\n        \"updated_at\": \"2026-04-23T08:19:42.907Z\",\n        \"status\": \"active\"\n    }\n}"
-        },
-        {
-          "name": "ErrEmptyReq",
+          "name": "errEmptyReq",
           "originalRequest": {
             "method": "PUT",
             "header": [],
@@ -638,7 +739,7 @@
           "body": "{\n    \"message\": \"Improper Request Body\",\n    \"errors\": [\n        \"Name is a required field.\",\n        \"Department is a required field.\",\n        \"Salary is a required field.\"\n    ]\n}"
         },
         {
-          "name": "ErrBadBody",
+          "name": "errBadBody",
           "originalRequest": {
             "method": "PUT",
             "header": [],
@@ -698,6 +799,68 @@
           ],
           "cookie": [],
           "body": "{\n    \"message\": \"Improper Request Body\",\n    \"errors\": [\n        \"Name must be between 3-100 characters\",\n        \"Department cannot be empty spaces\",\n        \"Salary must be a number.\",\n        \"Email invalid\"\n    ]\n}"
+        },
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"department\": \"{{$randomJobArea}}\",\r\n    \"salary\": {{$randomInt}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "214"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"d6-JNGNNClREOjX6FLBt6tz9Z5PyMc\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:02:16 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Employee replaced\",\n    \"data\": {\n        \"id\": 53,\n        \"name\": \"Irma Boyle\",\n        \"department\": \"Data\",\n        \"salary\": 141,\n        \"email\": null,\n        \"created_at\": \"2026-04-27T10:40:29.000Z\",\n        \"updated_at\": \"2026-04-27T11:02:16.631Z\",\n        \"status\": \"inactive\"\n    }\n}"
         }
       ]
     },
@@ -711,7 +874,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"email\": \"{{$randomExampleEmail}}\"\r\n}",
+          "raw": "{\r\n  \"name\": \"q\",\r\n  \"department\": \"     \",\r\n  \"salary\": \"Forty\",\r\n  \"email\": \"fakemail.com\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -732,7 +895,7 @@
       },
       "response": [
         {
-          "name": "Update employee",
+          "name": "success",
           "originalRequest": {
             "method": "PATCH",
             "header": [],
@@ -771,15 +934,15 @@
             },
             {
               "key": "Content-Length",
-              "value": "238"
+              "value": "236"
             },
             {
               "key": "ETag",
-              "value": "W/\"ee-/NV8xMzyOND/jZ3XOJBK9Ngbt0I\""
+              "value": "W/\"ec-y6DbeMFnpJs41tXtCsbvwMsfBEQ\""
             },
             {
               "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:49 GMT"
+              "value": "Mon, 27 Apr 2026 11:03:15 GMT"
             },
             {
               "key": "Connection",
@@ -791,7 +954,131 @@
             }
           ],
           "cookie": [],
-          "body": "{\n    \"Message\": \"Employee updated\",\n    \"employee\": {\n        \"id\": 32,\n        \"name\": \"Anita Towne\",\n        \"department\": \"Metrics\",\n        \"salary\": 712,\n        \"email\": \"Kristin12@example.com\",\n        \"created_at\": \"2026-04-23T08:19:13.000Z\",\n        \"updated_at\": \"2026-04-23T08:19:49.778Z\",\n        \"status\": \"active\"\n    }\n}"
+          "body": "{\n    \"message\": \"Employee updated\",\n    \"data\": {\n        \"id\": 53,\n        \"name\": \"Irma Boyle\",\n        \"department\": \"Data\",\n        \"salary\": 141,\n        \"email\": \"Yvette.Lehner@example.org\",\n        \"created_at\": \"2026-04-27T10:40:29.000Z\",\n        \"updated_at\": \"2026-04-27T11:03:15.405Z\",\n        \"status\": \"inactive\"\n    }\n}"
+        },
+        {
+          "name": "errEmptyUpdate",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}"
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "34"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"22-KIvOwcgVDniHTvAYMG3dgEm6wrY\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:19:28 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Update fields empty.\"\n}"
+        },
+        {
+          "name": "errBadReq",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"q\",\r\n  \"department\": \"     \",\r\n  \"salary\": \"Forty\",\r\n  \"email\": \"fakemail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}"
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "161"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"a1-y+X51bGNrD1UQk9ZN6FpCICpVEY\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:21:44 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Validation Error.\",\n    \"errors\": [\n        \"Name must be between 3-100 characters\",\n        \"Department cannot be empty spaces\",\n        \"Salary must be a number.\",\n        \"Email invalid\"\n    ]\n}"
         }
       ]
     },
@@ -805,7 +1092,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"status\": \"inactive\"\r\n}",
+          "raw": "{\r\n    \"status\": \"asd\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -827,7 +1114,7 @@
       },
       "response": [
         {
-          "name": "Update status",
+          "name": "success",
           "originalRequest": {
             "method": "PATCH",
             "header": [],
@@ -867,15 +1154,15 @@
             },
             {
               "key": "Content-Length",
-              "value": "240"
+              "value": "241"
             },
             {
               "key": "ETag",
-              "value": "W/\"f0-ohU1hgryXe3bLQOJM78xUbJdodc\""
+              "value": "W/\"f1-nNap/+GouYsg30RWGbI7O0iYS4A\""
             },
             {
               "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:19:56 GMT"
+              "value": "Mon, 27 Apr 2026 11:28:06 GMT"
             },
             {
               "key": "Connection",
@@ -887,7 +1174,133 @@
             }
           ],
           "cookie": [],
-          "body": "{\n    \"Message\": \"Employee updated\",\n    \"employee\": {\n        \"id\": 32,\n        \"name\": \"Anita Towne\",\n        \"department\": \"Metrics\",\n        \"salary\": 712,\n        \"email\": \"Kristin12@example.com\",\n        \"created_at\": \"2026-04-23T08:19:13.000Z\",\n        \"updated_at\": \"2026-04-23T08:19:56.573Z\",\n        \"status\": \"inactive\"\n    }\n}"
+          "body": "{\n    \"message\": \"Employee updated\",\n    \"data\": {\n        \"id\": 54,\n        \"name\": \"Johnathan Beahan\",\n        \"department\": \"Assurance\",\n        \"salary\": 761,\n        \"email\": \"Kaela55@hotmail.com\",\n        \"created_at\": \"2026-04-27T11:17:03.000Z\",\n        \"updated_at\": \"2026-04-27T11:27:52.000Z\",\n        \"status\": \"inactive\"\n    }\n}"
+        },
+        {
+          "name": "errBadResponse",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"asd\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}/status",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}",
+                "status"
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "83"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"53-D6WKIxIO9twSCennr0QYL39L5vo\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:29:21 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Validation Error.\",\n    \"errors\": [\n        \"Status must be (active) or (inactive).\"\n    ]\n}"
+        },
+        {
+          "name": "errEmptyRequest",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}/status",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}",
+                "status"
+              ]
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "72"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"48-7tLZqC3D3s79b4V41khbYSo/tsc\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:30:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Validation Error.\",\n    \"errors\": [\n        \"Status is a required field.\"\n    ]\n}"
         }
       ]
     },
@@ -922,7 +1335,7 @@
       },
       "response": [
         {
-          "name": "Delete employee",
+          "name": "success",
           "originalRequest": {
             "method": "DELETE",
             "header": [],
@@ -957,7 +1370,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 23 Apr 2026 08:20:04 GMT"
+              "value": "Mon, 27 Apr 2026 11:31:04 GMT"
             },
             {
               "key": "Connection",
@@ -970,6 +1383,68 @@
           ],
           "cookie": [],
           "body": null
+        },
+        {
+          "name": "errNotFound",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/v1/employees/{{employeeyId}}",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "v1",
+                "employees",
+                "{{employeeyId}}"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "33"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"21-sGF76DXCr9ROaQXvtZ6b5L8vNjc\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 11:31:28 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Employee not found.\"\n}"
         }
       ]
     }
