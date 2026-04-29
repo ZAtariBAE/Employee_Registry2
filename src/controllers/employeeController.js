@@ -27,7 +27,9 @@ exports.getAllEmployees = async (req, res, next) => {
             data: employee
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }
 
@@ -57,7 +59,9 @@ exports.createEmployee = async (req, res, next) => {
         });
 
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }
 
@@ -73,11 +77,13 @@ exports.getEmployeeById = async (req, res, next) => {
 
 
         res.status(200).json({
-            message: "Employee created",
+            message: "Employees retrieved successfully",
             data: employee
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error"
+        });
     }
 }
 
@@ -110,11 +116,13 @@ exports.replaceEmployee = async (req, res, next) => {
             email: email || null
         });
         res.status(200).json({ 
-            message: "Employee replaced",
+            message: "Employee replaced succesfully",
             data: employee
           });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }
 
@@ -156,12 +164,14 @@ exports.updateEmployee = async (req, res, next) => {
         // SQL
         await employee.update(updates);
         res.status(200).json({ 
-            message: "Employee updated",
+            message: "Employee updated successfully",
             data: employee
           });
 
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }
 
@@ -190,11 +200,13 @@ exports.updateEmployeeStatus = async (req, res, next) => {
         const { status } = req.body;
         await employee.update({ status });
         res.status(200).json({ 
-            message: "Employee updated",
+            message: "Employee status updated successfully",
             data: employee
           });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }
 
@@ -209,6 +221,8 @@ exports.deleteEmployee = async (req, res, next) => {
         }
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ 
+            message: "Internal Error",
+        });
     }
 }

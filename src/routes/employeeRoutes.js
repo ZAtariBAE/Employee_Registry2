@@ -58,7 +58,7 @@ const employeeController = require('../controllers/employeeController');
  *         description: Filter employees by status
  *     responses:
  *       200:
- *         description: Employees retrieved successfully
+ *         description: Success (Employees retrieved)
  *         content:
  *           application/json:
  *             schema:
@@ -71,32 +71,509 @@ const employeeController = require('../controllers/employeeController');
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Employee'
- *       422:
- *         description: Bad Status
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Invalid status parameter
  *       500:
- *         description: Server Error
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ *          
  */
-
 router.get('/', employeeController.getAllEmployees);
 
+/**
+ * @swagger
+ * /employees:
+ *  post:
+ *      summary: Creates and stores an employee entry
+ *      tags: [Employees]
+ *      requestBody:
+ *          required: true
+ *          description: The employee data to be created
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - name
+ *                          - department
+ *                          - salary
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              description: The employee's full name
+ *                              example: John Doe
+ *                          department:
+ *                              type: string
+ *                              description: The employee's department
+ *                              example: Finance
+ *                          salary:
+ *                              type: number
+ *                              description: Value of employee's salary
+ *                              example: 1234.5
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *                              description: Optional email of employee
+ *                              example: name@gmail.com
+ *      responses:
+ *          201:
+ *              description: Success (Employees created)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Employees created successfully
+ *                              data:
+ *                                  $ref: '#/components/schemas/Employee'
+ *          422:
+ *              description: Error (Improper Request Body)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Improper Request Body
+ *                              data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Salary must be a number.
+ *
+ *          400:
+ *              description: Error (JSON formatting incorrect)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Bad Request
+ *                          data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Malformed JSON payload.
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.post('/', employeeController.createEmployee);
 
+/**
+ * @swagger
+ * /employees/{id}:
+ *    put:
+ *      summary: Retrieve a specific employee details
+ *      tags: [Employees]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *            description: Unique ID of the employee
+ *      responses:
+ *          200:
+ *              description: Success (Employees retrieved)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Employees retrieved successfully
+ *                              data:
+ *                                  $ref: '#/components/schemas/Employee'
+ *          404:
+ *              description: Error (Not Found)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Employee not found
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.get('/:id', employeeController.getEmployeeById);
 
+/**
+ * @swagger
+ * /employees/{id}:
+ *   put:
+ *      summary: Replaces employee details within same ID
+ *      tags: [Employees]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *            description: Unique ID of the employee
+ *      requestBody:
+ *          required: true
+ *          description: The replacment employee data
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - name
+ *                          - department
+ *                          - salary
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              description: The employee's full name
+ *                              example: John Doe
+ *                          department:
+ *                              type: string
+ *                              description: The employee's department
+ *                              example: Finance
+ *                          salary:
+ *                              type: number
+ *                              description: Value of employee's salary
+ *                              example: 1234.5
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *                              description: Optional email of employee
+ *                              example: name@gmail.com
+ *      responses:
+ *          200:
+ *              description: Success (Employees replaced)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Employees replaced successfully
+ *                              data:
+ *                                  $ref: '#/components/schemas/Employee'
+ *          422:
+ *              description: Error (Improper Request Body)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Improper Request Body
+ *                              data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Salary must be a number.
+ *
+ *          400:
+ *              description: Error (JSON formatting incorrect)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Bad Request
+ *                          data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Malformed JSON payload.
+ *          404:
+ *              description: Error (Not Found)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Employee not found
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.put('/:id', employeeController.replaceEmployee);
 
+/**
+ * @swagger
+ * /employees/{id}:
+ *   patch:
+ *      summary: Update employee details
+ *      tags: [Employees]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *            description: Unique ID of the employee
+ *      requestBody:
+ *          required: true
+ *          description: The data to be updated
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      minProperties: 1
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              description: The employee's full name
+ *                              example: John Doe
+ *                          department:
+ *                              type: string
+ *                              description: The employee's department
+ *                              example: Finance
+ *                          salary:
+ *                              type: number
+ *                              description: Value of employee's salary
+ *                              example: 1234.5
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *                              description: Optional email of employee
+ *                              example: name@gmail.com
+ *      responses:
+ *          200:
+ *              description: Success (Employees updated)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Employees updated successfully
+ *                              data:
+ *                                  $ref: '#/components/schemas/Employee'
+ *          422:
+ *              description: Error (Improper Request Body)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Improper Request Body
+ *                              data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Salary must be a number.
+ *
+ *          400:
+ *              description: Error (JSON formatting incorrect)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Bad Request
+ *                          data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Malformed JSON payload.
+ *          404:
+ *              description: Error (Not Found)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Employee not found
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.patch('/:id', employeeController.updateEmployee)
 
+/**
+ * @swagger
+ * /employees/{id}/status:
+ *   patch:
+ *      summary: Update employee status
+ *      tags: [Employees]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *            description: Unique ID of the employee
+ *      requestBody:
+ *          required: true
+ *          description: The updated status field
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - status
+ *                      properties:
+ *                          status:
+ *                              type: string
+ *                              description: The employment status
+ *                              enum: [active, inactive]
+ *                              example: active
+ *      responses:
+ *          200:
+ *              description: Success (Status updated)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Employee status updated successfully
+ *                              data:
+ *                                  $ref: '#/components/schemas/Employee'
+ *          422:
+ *              description: Error (Improper Request Body)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: Improper Request Body
+ *                              data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Status must be text.
+ *
+ *          400:
+ *              description: Error (JSON formatting incorrect)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Bad Request
+ *                          data: 
+ *                              type: array
+ *                              items:    
+ *                                  type: string
+ *                                  example: Malformed JSON payload.
+ *          404:
+ *              description: Error (Not Found)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Employee not found
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.patch('/:id/status', employeeController.updateEmployeeStatus);
 
+/**
+ * @swagger
+ * /employees/{id}:
+ *   delete:
+ *      summary: Deletes an employee record
+ *      tags: [Employees]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *            description: Unique ID of the employee
+ *
+ *      responses:
+ *          204:
+ *              description: Success (Employee Deleted) 
+ *          404:
+ *              description: Error (Not Found)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Employee not found
+ *          500:
+ *              description: Error (Server Error)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: Internal Error
+ */
 router.delete('/:id', employeeController.deleteEmployee);
 
 module.exports = router;
