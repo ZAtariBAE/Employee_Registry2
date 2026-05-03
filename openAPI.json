@@ -1,0 +1,739 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Employee Registry",
+    "version": "1.0.0",
+    "description": "API for manging employee records"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/v1"
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "summary": "Retrieve a list of all employees",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive",
+                "all"
+              ]
+            },
+            "required": false,
+            "description": "Filter employees by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success (Employees retrieved)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Employees retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Employee"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates and stores an employee entry",
+        "tags": [
+          "Employees"
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The employee data to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "department",
+                  "salary"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The employee's full name",
+                    "example": "John Doe"
+                  },
+                  "department": {
+                    "type": "string",
+                    "description": "The employee's department",
+                    "example": "Finance"
+                  },
+                  "salary": {
+                    "type": "number",
+                    "description": "Value of employee's salary",
+                    "example": 1234.5
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Optional email of employee",
+                    "example": "name@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success (Employees created)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Employees created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Employee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error (JSON formatting incorrect)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Malformed JSON payload."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error (Improper Request Body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Improper Request Body"
+                    },
+                    "data": null,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Salary must be a number."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "put": {
+        "summary": "Replaces employee details within same ID",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Unique ID of the employee"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success (Employees replaced)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Employees replaced successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Employee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error (JSON formatting incorrect)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Malformed JSON payload."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error (Not Found)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Employee not found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error (Improper Request Body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Improper Request Body"
+                    },
+                    "data": null,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Salary must be a number."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "The replacment employee data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "department",
+                  "salary"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The employee's full name",
+                    "example": "John Doe"
+                  },
+                  "department": {
+                    "type": "string",
+                    "description": "The employee's department",
+                    "example": "Finance"
+                  },
+                  "salary": {
+                    "type": "number",
+                    "description": "Value of employee's salary",
+                    "example": 1234.5
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Optional email of employee",
+                    "example": "name@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update employee details",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Unique ID of the employee"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The data to be updated",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The employee's full name",
+                    "example": "John Doe"
+                  },
+                  "department": {
+                    "type": "string",
+                    "description": "The employee's department",
+                    "example": "Finance"
+                  },
+                  "salary": {
+                    "type": "number",
+                    "description": "Value of employee's salary",
+                    "example": 1234.5
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Optional email of employee",
+                    "example": "name@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (Employees updated)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Employees updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Employee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error (JSON formatting incorrect)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Malformed JSON payload."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error (Not Found)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Employee not found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error (Improper Request Body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Improper Request Body"
+                    },
+                    "data": null,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Salary must be a number."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes an employee record",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Unique ID of the employee"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success (Employee Deleted)"
+          },
+          "404": {
+            "description": "Error (Not Found)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Employee not found"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{id}/status": {
+      "patch": {
+        "summary": "Update employee status",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Unique ID of the employee"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The updated status field",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "The employment status",
+                    "enum": [
+                      "active",
+                      "inactive"
+                    ],
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success (Status updated)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Employee status updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Employee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error (JSON formatting incorrect)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Malformed JSON payload."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error (Not Found)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Employee not found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error (Improper Request Body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Improper Request Body"
+                    },
+                    "data": null,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "Status must be text."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error (Server Error)",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "required": [
+          "name",
+          "department",
+          "salary"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The auto-generated id of the employee",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "salary": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
